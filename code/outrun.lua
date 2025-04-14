@@ -219,10 +219,8 @@ function e.drawScroller() -- hacks the NSA mainframe
 end
 
 function e.drawLandscape()
-    
     for z = gridSize - 1, 1, -1 do -- depth-loop going from back to front because z-buffers are hard
         for x = 1, gridSize - 1 do -- looping the x-axis 
-            
             local wx1       = x * gridSpacing
             local wz1       = z * gridSpacing
             local wx2       = (x + 1) * gridSpacing
@@ -248,8 +246,6 @@ function e.drawLandscape()
                 normal2.x * lightDir.x + normal2.y * lightDir.y + normal2.z * lightDir.z)
             light1          = math.min(1, math.max(ambientLight, light1))
             light2          = math.min(1, math.max(ambientLight, light2))
-
-            
             -- wireframe effect
             local r,g,b --local color vars for green to white wireframe fade  
             if z > zmax and z < zmin and t > 3.5 then -- within the wireframe clamp
