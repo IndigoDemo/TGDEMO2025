@@ -9,7 +9,7 @@
 -------| 64		   | 4     | metaballs negative shader + menger wall   | Finished    |--------
 -------| 160	   | 5     | menger sponge, dancing lady, creds		   | Finished    |--------
 -------| 96		   | 6     | synthwave outrun greetings				   | Finished    |--------
--------| 273	   | 7     | todo-screen							   | well, duh.  |--------
+-------| 273	   | 7     | static									   | Finished	 |--------
 -------| 224   	   | 8     | Pure ketamine							   | Finished    |--------
 -------| 192 	   | 9     | menger sponge the black album             | Finished    |--------
 -------| 80        | 10    | Pretty fucking fractal                    | Finished    |--------
@@ -18,15 +18,15 @@
 -- for debugging: ----------------------------------------------------------------------------
 deb = 	{	
 			status 			= false, 	-- debug mode active 
-			index 			= 6,	 	-- effectindex to start at
-			offset 			= 96,	 	-- beat to start at
+			index 			= 7,	 	-- effectindex to start at
+			offset 			= 0,	 	-- beat to start at
 			keepsettings 	= false, 	-- stay on effect forever, or continue playing
 			skiploader 		= false,  	-- skip the loader animation (independent of debug bool)
-			panel 			= false 		-- show debugpanel
+			panel 			= false		-- show debugpanel (independent of debug bool)
 		} 
 ---------------------------------------------------------------------------------------------
 local resolution = "FHD"  -- HD = 720p | FHD = 1080p | QHD = 1440p | POTATO = 540p --
-local fullscreen = false
+local fullscreen = true
 ---------------------------------------------------------------------------------------------
 
 -- list over beatindexes and the corresponding effect composer -------------------
@@ -37,15 +37,15 @@ local fullscreen = false
 
 local bilist = { 	28,  64,  80,  96, 160, 192, 224, 256, 264, 265, 266, 267, 268, 269, 
 				   270, 271, 272, 273, 274, 275, 276, 277, 278, 279, 280}
-local eilist = {  	 3,   4,  10,   6,   5,   9,   8,  11,   6,   9,   8,  10,  11,   6,   
-					 8,   9,  10,   7,  11,  10,   9,   5,   8,   6,  11}
+local eilist = {  	 3,   4,  10,   6,   5,   9,   8,  11,   6,   9,   8,  10,  7,   6,   
+					 8,   9,  10,   7,  11,  10,   9,   5,   8,   7,  11}
 local blinklist = {	64,  68,  72,  76,  80,  88,  92,  93,  94,  95,  96,  128, 160, 192, 200, 
 				   208, 212, 216, 220, 264, 265, 266, 267, 268, 269,  270, 271, 272, 
 				   273, 274, 275, 276, 277, 278, 279, 280}
 local invertlist = {50,  68,  72,  76, 164, 160, 192, 200, 208, 212, 216, 217, 218, 219}
 
 local scenenames = {"Loader", "Screenslime", "Oldschool", "Metawalls", "Menger Creds", 
-					"Synthwave Greets", "TODO:", "KETAMINE", "Menger Creds Black", 
+					"Synthwave Greets", "PSSSSSCHHHH", "KETAMINE", "Menger Creds Black", 
 					"OmG sO pWeTTy!", "Conway Plane"}
 --aliases
 gfx = love.graphics
@@ -199,20 +199,25 @@ end
 local function debugpanel(text) -- beatcounter in lower right corner. kinda neat.
 	local thestring = ""
 	local fps = love.timer.getFPS()
-	
+	local gpuStats = love.graphics.getStats()
+	local cores = love.system.getProcessorCount()
+	local drawCalls = gpuStats.drawcalls
+	local canvases = gpuStats.canvasswitches
+	local memory = collectgarbage("count") 
 	local text = ("Beat: "..text)
 	local text2 = ("FPS: "..fps)
 	local text3 = ("Scene "..demo.effect.index..": "..scenenames[demo.effect.index])
-   	
+   	local text4 = ("Drawcalls: "..drawCalls.." | Framebuffers: "..canvases.. " | Mem usage: "..math.floor(memory/1000).."MB") 
    	local textWidth 	= font.one:getWidth(text)
     local textHeight 	= font.one:getHeight(text)
 	local textWidth2 	= font.one:getWidth(text2) 
     local textHeight2 	= font.one:getHeight(text2)
     local textWidth3 	= font.one:getWidth(text3) 
-    
+    local textWidth4	= font.one:getWidth(text4)
     -- make a semi transparent panel for debuginfo 
     gfx.setColor(.1,.3,.3,.4)
     gfx.rectangle ("fill",0,_h*.9, _w, _h*.20)
+    gfx.rectangle ("fill",_w*.2,0, _w*.6, _h*.055)
 
 	-- prints the current beatvalue to the screen. blinking green if on a beat    
     if isInt(t.pbeat) then 
@@ -231,6 +236,7 @@ local function debugpanel(text) -- beatcounter in lower right corner. kinda neat
 
     gfx.setColor(1,1,1)
     gfx.print(text3,_w*.5, _h*.95, 0, 1, 1, textWidth3/2, textHeight2/2)
+    gfx.print(text4, _w*.5, _h*.03, 0, .5, .5, textWidth4/2, textHeight2/2)
 end
 
 local function parameterPusher(beat, dt) --keeps track of the render pipeline etc

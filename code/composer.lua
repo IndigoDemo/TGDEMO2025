@@ -124,6 +124,9 @@ return { --this is the demo, guys. it's all here. that's the demo.
 		demo.effect.raycast 		= require("code/wallceiling")
 		demo.effect.raycast.load()
 
+		demo.effect.static 			= require("code/static")
+		demo.effect.static.load()
+
 		demo.effect.objv			= require("code/objviewer")
 		demo.effect.objv.load("media/indigo.obj")
 		
@@ -181,6 +184,7 @@ return { --this is the demo, guys. it's all here. that's the demo.
 		gfx.setCanvas()
 		--gfx.clear()
 		bloomEffect2:apply(canvas3)
+		
 	end, 
 	update = function(dt)
 		local num 
@@ -480,23 +484,14 @@ return { --this is the demo, guys. it's all here. that's the demo.
 	{ 
 
 	update = function (dt)
-		if not tsize then 
-			tsize = 1
-		else
-			if tsize > 1 then tsize = tsize - dt end
-		end 
-		if t.pbeat == math.floor(t.pbeat) then 
-			tsize = 2
-		end
+		demo.effect.static.setNoiseAmount(1)
+		demo.effect.static.update(dt)
 	end, 
 
 	draw = function()
-		local text = "//TODO:"
-		local textHeight = font.one:getHeight(text) 
-		local textWidth = font.one:getWidth(text) 
-		gfx.setFont(font.one)
-		gfx.setColor(.2,1,.2)
-		gfx.print(text, _w, _h, 0, tsize, tsize, textWidth/2, textHeight/2)
+		gfx.setColor(1,1,1)
+		demo.effect.static.draw()
+		gfx.draw(demo.effect.static.finalcanvas)
 		gfx.setColor(1,1,1)
 	end, 
 	}, 
