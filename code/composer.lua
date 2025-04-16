@@ -540,14 +540,18 @@ return { --this is the demo, guys. it's all here. that's the demo.
 			boost = 6
 			demo.effect.spheretube.setSphereCam(math.sin(global.time)*200, math.cos(global.time)*200, 100)
 			demo.effect.spheretube.update(dt, demo.spherefov, sx+boost, sy, sz)
-			demo.plusminus = -demo.plusminus	
-			plox = 0 
+				
+			if math.random()*2 > 1 then 
+				demo.plusminus = -demo.plusminus	
+				demo.plox = 0 
+			end
 		else
 			demo.effect.spheretube.update(dt)
-			plox = plox + dt*3
-			if plox > 1 then plox = 1 end
+			
+			if demo.plox > 1 then demo.plox = 1 end
 		end
-		demo.shader.angry:setIntensity(plox)
+		demo.plox = demo.plox + dt*3
+		demo.shader.angry:setIntensity(demo.plox)
 
 		if t.pbeat > 240 then 
 			demo.effect.tos.setIndex(62)
@@ -560,6 +564,9 @@ return { --this is the demo, guys. it's all here. that's the demo.
 		local indexer = math.floor(math.random()*#effectlist)+1
 		local indexer2 = math.floor(math.random()*#effectlist)+1
 		gfx.clear()
+		
+		--demo.plusminus = 0 
+
 		if demo.plusminus == 1 then
 			demo.shader.angry:combineShaders( {effectlist[indexer],effectlist[indexer2]})
 			demo.effect.spheretube.draw("sphere")
@@ -577,6 +584,7 @@ return { --this is the demo, guys. it's all here. that's the demo.
 		gfx.clear()
 		bloomEffect4:apply(canvas1)
 		gfx.setCanvas()
+		gfx.setColor(1,1,1)
 		gfx.setShader(demo.shader.angry:getActiveShader())
 		gfx.clear()
 		gfx.draw(canvas2)

@@ -18,15 +18,16 @@
 -- for debugging: ----------------------------------------------------------------------------
 deb = 	{	
 			status 			= false, 	-- debug mode active 
-			index 			= 7,	 	-- effectindex to start at
+			index 			= 8,	 	-- effectindex to start at
 			offset 			= 0,	 	-- beat to start at
-			keepsettings 	= false, 	-- stay on effect forever, or continue playing
-			skiploader 		= false,  	-- skip the loader animation (independent of debug bool)
+			keepsettings 	= true, 	-- stay on effect forever, or continue playing
+			skiploader 		= true,  	-- skip the loader animation (independent of debug bool)
 			panel 			= false		-- show debugpanel (independent of debug bool)
 		} 
 ---------------------------------------------------------------------------------------------
 local resolution = "FHD"  -- HD = 720p | FHD = 1080p | QHD = 1440p | POTATO = 540p --
 local fullscreen = true
+
 ---------------------------------------------------------------------------------------------
 
 -- list over beatindexes and the corresponding effect composer -------------------
@@ -82,7 +83,8 @@ demo = {effect 	= {index = 1, aindex = 1},
 		incdt		= 0,
 		spherefov 	= 180,
 		plusminus = -1,
-		angerintensity = 0,   
+		angerintensity = 0,
+		plox = 0    
 }
 
 -- Yes, i'm lazy and it's almost 1 in the morning.
@@ -122,7 +124,7 @@ local function setResolution(argument) --guess what this does :p
 			resindex = i
 		end 
 	end
-
+	love.window.setTitle("INDIGO")
 	love.window.setMode(restable[resindex].x, restable[resindex].y)
 	global.scale 	= restable[resindex].scale
 	_w, _h 			= gfx.getDimensions()

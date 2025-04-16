@@ -5,6 +5,7 @@ local BlinkingGrid = require("/code/grid")
 local conway = require ("/code/conway")
 local Tube = require("/code/tube")
 local sintimer = 0 
+local oldbeat = 0 
 local canvas
 local pattern 
 local gridsize = {x=80,y=45}
@@ -104,7 +105,12 @@ function e.load()
     sphereEffect = SphereInterior.new()
     sphereEffect:setRadius(500.0)
     sphereEffect:setCameraPosition(100, 0, 300)
-    
+    vi = {{camerapos={x = 36.4, y = 16.5, z = -78.9},cameratarget = {x = 63.9, y = 9.8, z = -79.8}, radius = 21.9, curvatureradius = 236.9, curvaturefactor = 0.32, fov = 100},
+          {camerapos={x = 36.4, y = -17.8, z = -78.9},cameratarget = {x = 50.8, y = -42.9, z = -79.2}, radius = 21.9, curvatureradius = 236.9, curvaturefactor = 0.32, fov = 140}, 
+          {camerapos={x = 10.5, y = -1, z = 90.5},cameratarget = {x = 11.6, y = -4, z = -79.2}, radius = 21.9, curvatureradius = 236.9, curvaturefactor = 0.32, fov = 120},
+          {camerapos={x = 9.7, y = -1.2, z = 23.3},cameratarget = {x = -13.7, y = -4.1, z = -38.9}, radius = 3.3, curvatureradius = 214.4, curvaturefactor = 0.11, fov = 180} 
+
+            }
 end
 
 function e.setSphereCam(x,y,z)
@@ -112,6 +118,24 @@ function e.setSphereCam(x,y,z)
 end
 
 function e.update(dt, sphfov, sxr, syr, szr)
+    
+
+    if isInt(t.pbeat) and math.floor(t.pbeat)>oldbeat then  
+        local rv = math.floor(math.random(5))
+        if rv < 1 then rv = 1 end
+        if rv > #vi then rv = #vi end
+        
+        torusEffect:setTubeRadius(vi[rv].radius)
+        torusEffect:setCurvatureRadius(vi[rv].curvatureradius)
+        torusEffect:setCurvatureFactor(vi[rv].curvaturefactor)
+        torusEffect:setCameraPosition(vi[rv].camerapos.x, vi[rv].camerapos.y, vi[rv].camerapos.z)
+        torusEffect:setCameraTarget(vi[rv].cameratarget.x, vi[rv].cameratarget.y, vi[rv].cameratarget.z)
+        torusEffect:setFOV(vi[rv].fov)
+        oldbeat =math.floor(t.pbeat)
+    end
+
+
+
     local fov = sphfov or 90
     
     sintimer = sintimer + dt
