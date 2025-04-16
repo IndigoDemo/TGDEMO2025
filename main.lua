@@ -26,7 +26,7 @@ deb = 	{
 		} 
 ---------------------------------------------------------------------------------------------
 local resolution = "FHD"  -- HD = 720p | FHD = 1080p | QHD = 1440p | POTATO = 540p --
-local fullscreen = true
+local fullscreen = false
 ---------------------------------------------------------------------------------------------
 
 -- list over beatindexes and the corresponding effect composer -------------------
@@ -297,11 +297,37 @@ local scenecomposer = require ("code/composer")
 ----- MAIN LOOP FUNCTIONS -------------------------------------------------------------------
 ---------------------------------------------------------------------------------------------
 
-function love.load()
-	print("Program name", arg[0])
-	print("Arguments:")
-	for l = 1, #arg do
-	print(l," ",arg[l])
+function love.load(arg, arg2)
+	local arguments = arg2
+	for i = 1, #arguments do  
+		-- res
+		
+		if arguments[i] == "--FHD" or arguments[i] =="--fhd" then 
+			global.resolution = "FHD"
+		elseif arguments[i] == "--HD" or arguments[i] =="--hd"then 
+			global.resolution = "HD"
+		elseif arguments[i] == "--QHD" or arguments[i] =="--qhd" then
+			global.resolution = "QHD"
+		elseif arguments[i] == "--POTATO" or arguments[i] =="--potato"then 
+			global.resolution = "POTATO"
+		end
+		
+		-- window mode
+		if arguments[i] == "--FULLSCREEN" or arguments[i] =="--fullscreen" then 
+			fullscreen = true
+		elseif arguments[i] == "--WINDOW" or arguments[i] =="--window" then 
+			fullscreen = false
+		end
+		
+		-- debug info
+		if arguments[i]== "--DEBUG" or arguments[i] =="--debug"then 
+			deb.panel = true
+		end
+		-- skip the fake loader	
+		if arguments[i]== "--SKIPLOADER" or arguments[i] =="--skiploader" then 
+			deb.skiploader = true
+		end
+
 	end
 	
 	setResolution(global.resolution) 		-- sets resolution (hd, fhd and qhd supported. scaling is..partially implemented)
