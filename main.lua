@@ -21,7 +21,7 @@ deb = 	{
 			index 			= 8,	 	-- effectindex to start at
 			offset 			= 0,	 	-- beat to start at
 			keepsettings 	= true, 	-- stay on effect forever, or continue playing
-			skiploader 		= true,  	-- skip the loader animation (independent of debug bool)
+			skiploader 		= false,  	-- skip the loader animation (independent of debug bool)
 			panel 			= false		-- show debugpanel (independent of debug bool)
 		} 
 ---------------------------------------------------------------------------------------------

@@ -383,7 +383,7 @@ return { --this is the demo, guys. it's all here. that's the demo.
 		cuboid2:update(dt, global.time, t.pbeat, mengIterations)
 		
 		if global.videoplaying == false then 
-			video:seek(29)
+			--video:seek(29)
 			video:play()
 			demo.effect.tos.setIndex(63)
 			global.videoplaying = true
@@ -636,7 +636,7 @@ return { --this is the demo, guys. it's all here. that's the demo.
 		end 
 
 		if global.videoplaying == false then 
-			video:seek(29)
+			--video:seek(29)
 			video:play()
 			demo.effect.tos.setIndex(63)
 			global.videoplaying = true
