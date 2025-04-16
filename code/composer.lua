@@ -223,7 +223,7 @@ return { --this is the demo, guys. it's all here. that's the demo.
 ----------------------########------------------------------------
  	{ 
 	draw = function()
-			--draw the background to effectcanvas
+		if demo.effect.loader then demo.effect.loader = nil end 
 		if t.pbeat > 47 and t.pbeat < 65 then 
 			demo.effect.plasma.draw(0, 0)
 		end 
@@ -317,6 +317,8 @@ return { --this is the demo, guys. it's all here. that's the demo.
 
 	{
 	update = function(dt)
+		if demo.effect.fluid then demo.effect.fluid = nil end		
+
 		demo.coleur = demo.coleur + .001 
 		demo.effect.tos.update(dt, t.pbeat)
 		demo.effect.menger.update(dt, demo.coleur, 4)
@@ -358,6 +360,8 @@ return { --this is the demo, guys. it's all here. that's the demo.
 
 	{ 
 	update = function (dt)
+		if demo.effect.cube then demo.effect.cube = nil end
+		if demo.effect.plasma then demo.effect.plasma = nil end 
 		if math.floor(t.pbeat) == 188 then
 			mengIterations = 2
 		end 

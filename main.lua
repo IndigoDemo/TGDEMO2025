@@ -18,15 +18,15 @@
 -- for debugging: ----------------------------------------------------------------------------
 deb = 	{	
 			status 			= false, 	-- debug mode active 
-			index 			= 11,	 	-- effectindex to start at
-			offset 			= 254,	 	-- beat to start at
+			index 			= 6,	 	-- effectindex to start at
+			offset 			= 96,	 	-- beat to start at
 			keepsettings 	= false, 	-- stay on effect forever, or continue playing
-			skiploader 		= false,  	-- skip the loader animation 
-			panel 			= false  	-- show debugpanel
+			skiploader 		= false,  	-- skip the loader animation (independent of debug bool)
+			panel 			= false 		-- show debugpanel
 		} 
 ---------------------------------------------------------------------------------------------
 local resolution = "FHD"  -- HD = 720p | FHD = 1080p | QHD = 1440p | POTATO = 540p --
-local fullscreen = false
+local fullscreen = true
 ---------------------------------------------------------------------------------------------
 
 -- list over beatindexes and the corresponding effect composer -------------------
@@ -234,30 +234,32 @@ local function debugpanel(text) -- beatcounter in lower right corner. kinda neat
 end
 
 local function parameterPusher(beat, dt) --keeps track of the render pipeline etc
-	phase = demo.effect.loader.phase()
-	skip.set(deb.skiploader) -- function for skipping the loader-intro
+	if demo.effect.loader then 
+		phase = demo.effect.loader.phase()
+		skip.set(deb.skiploader) -- function for skipping the loader-intro
 	
-	-- loaderstuff, will totally refactor later !
-	if demo.effect.index == 1 then 
-		if phase > 4 then 
-			if volume > 0 then volume=volume-(dt/2)
-				
-				if volume < 0 then volume = 0 
-					loadingsong:setVolume(volume)
+		-- loaderstuff, will totally refactor later !
+		if demo.effect.index == 1 then 
+			if phase > 4 then 
+				if volume > 0 then volume=volume-(dt/2)
+					
+					if volume < 0 then volume = 0 
+						loadingsong:setVolume(volume)
+					end
+				end
+			end
+			if phase > 5 then 
+				if global.d==0 then 
+					love.audio.stop(loadingsong)
+					loadingsong = nil
+					timing:play(beatoffset)
+					demo.effect.index = 2
+					global.d=1 
 				end
 			end
 		end
-		if phase > 5 then 
-			if global.d==0 then 
-				love.audio.stop(loadingsong)
-				loadingsong = nil
-				timing:play(beatoffset)
-				demo.effect.index = 2
-				global.d=1 
-			end
-		end
-	end
-	
+	end 
+
 	-- set correct effect update- and renderorder
 	if beat == oldbeat then 
 	else
